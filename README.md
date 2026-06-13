@@ -90,21 +90,21 @@ await start({
 
 ### 组件
 
-| 组件 | 说明 |
-|------|------|
-| `Stream` | Markdown 流式渲染，支持平滑渲染、虚拟滚动 |
-| `StreamMarkdown` | 轻量级 Markdown 渲染组件 |
-| `VirtualStreamContent` | 虚拟滚动内容容器 |
+| 组件                   | 说明                                      |
+| ---------------------- | ----------------------------------------- |
+| `Stream`               | Markdown 流式渲染，支持平滑渲染、虚拟滚动 |
+| `StreamMarkdown`       | 轻量级 Markdown 渲染组件                  |
+| `VirtualStreamContent` | 虚拟滚动内容容器                          |
 
 ### Composables
 
-| 函数 | 说明 |
-|------|------|
-| `useStream(options?)` | 核心流式数据管理 |
-| `useStreamFetch(url, options?)` | Fetch 专用 |
-| `useStreamSSE(url, options?)` | SSE 专用 |
-| `useStreamWS(url, options?)` | WebSocket 专用 |
-| `useSmoothRenderer(source, options?)` | 平滑渲染 |
+| 函数                                  | 说明             |
+| ------------------------------------- | ---------------- |
+| `useStream(options?)`                 | 核心流式数据管理 |
+| `useStreamFetch(url, options?)`       | Fetch 专用       |
+| `useStreamSSE(url, options?)`         | SSE 专用         |
+| `useStreamWS(url, options?)`          | WebSocket 专用   |
+| `useSmoothRenderer(source, options?)` | 平滑渲染         |
 
 ### 数据源配置
 

@@ -6,6 +6,7 @@
  */
 import { ref, computed } from 'vue'
 import { Stream, FetchSSEStream } from './index'
+import ThinkBlock from './demo/ThinkBlock.vue'
 
 // 提示词输入
 const prompt = ref('你好，请用 Markdown 格式介绍 Vue 3 的组合式 API，包含代码示例')
@@ -57,8 +58,25 @@ async function sendStream() {
   })
 
   try {
+    let inThinkBlock = false
     for await (const event of activeStream) {
+      if (event.reasoningContent) {
+        // 首次出现 reasoning_content，开启 ```think 块
+        if (!inThinkBlock) {
+          content.value += '```think\n'
+          inThinkBlock = true
+        }
+        content.value += event.reasoningContent
+      } else if (inThinkBlock) {
+        // reasoning_content 结束，闭合 ```think 块
+        content.value += '\n```\n\n'
+        inThinkBlock = false
+      }
       content.value += event.content
+    }
+    // 流结束时如果还在 think 块内，闭合它
+    if (inThinkBlock) {
+      content.value += '\n```\n\n'
     }
   } catch (err) {
     if ((err as Error).name !== 'AbortError') {
@@ -132,8 +150,13 @@ const isPlaying = computed(() => isStreaming.value || showMd.value)
           :smooth-speed="1"
           :auto-scroll="true"
           virtual
+          :custom-blocks="['think']"
           class="demo-stream"
-        />
+        >
+          <template #think="block">
+            <ThinkBlock :block="block" />
+          </template>
+        </Stream>
       </section>
     </main>
   </div>

@@ -8,6 +8,14 @@ export interface StreamRenderer {
   render(content: string, isStreaming: boolean): string
 }
 
+/** 自定义块实例 */
+export interface CustomBlockInstance {
+  /** 块类型（如 think、action 等） */
+  type: string
+  /** 块内容（原始文本） */
+  content: string
+}
+
 /** 自动滚动配置 */
 export interface AutoScrollOptions {
   /** 是否启用自动滚动 */

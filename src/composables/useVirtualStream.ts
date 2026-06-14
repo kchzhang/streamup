@@ -14,6 +14,8 @@
 
 import { ref, computed, watch, onUnmounted, type Ref, type ComputedRef } from 'vue'
 import { useVirtualizer, type Virtualizer } from '@tanstack/vue-virtual'
+import type { CustomBlockInstance } from '../core/types'
+import { decodeBase64 } from '../renderers/markdownRenderer'
 
 /** 虚拟滚动配置 */
 export interface VirtualStreamOptions {
@@ -31,8 +33,12 @@ export interface VirtualStreamOptions {
 
 /** 内容片段 */
 export interface ContentSegment {
-  /** 片段 HTML */
+  /** 片段类型 */
+  type: 'html' | 'custom-block'
+  /** 片段 HTML（type=html 时） */
   html: string
+  /** 自定义块信息（type=custom-block 时） */
+  block?: CustomBlockInstance
   /** 片段索引 */
   index: number
   /** 片段唯一 key */
@@ -82,6 +88,8 @@ let cachedSegments: ContentSegment[] = []
  *
  * 流式场景下，前 N-1 个段通常不变，仅末尾段更新，
  * 因此增量复用可以大幅减少 v-html / 组件更新次数。
+ *
+ * 同时识别 data-streams-block 占位符，将其转为 custom-block 类型的段。
  */
 function splitHtmlSegmentsIncremental(html: string): ContentSegment[] {
   if (!html?.trim()) {
@@ -98,43 +106,124 @@ function splitHtmlSegmentsIncremental(html: string): ContentSegment[] {
   const wrapper = document.createElement('div')
   wrapper.innerHTML = html
 
-  const newRawSegments: { html: string }[] = []
+  const newRawSegments: { html: string; type: 'html' | 'custom-block'; block?: CustomBlockInstance }[] = []
   let idx = 0
 
   for (const child of Array.from(wrapper.childNodes)) {
     if (child.nodeType === Node.ELEMENT_NODE) {
-      newRawSegments.push({ html: (child as HTMLElement).outerHTML })
+      const el = child as HTMLElement
+      // 检测自定义块占位符
+      const blockType = el.getAttribute('data-streams-block')
+      const blockContent = el.getAttribute('data-content')
+      if (blockType) {
+        const decodedContent = blockContent ? decodeBase64(blockContent) : ''
+        newRawSegments.push({
+          html: '',
+          type: 'custom-block',
+          block: { type: blockType, content: decodedContent },
+        })
+      } else {
+        newRawSegments.push({ html: el.outerHTML, type: 'html' })
+      }
       idx++
     } else if (child.nodeType === Node.TEXT_NODE) {
       const text = child.textContent
       if (text?.trim()) {
-        newRawSegments.push({ html: text })
+        newRawSegments.push({ html: text, type: 'html' })
         idx++
       }
     }
   }
 
-  // 增量复用：相同 HTML 字符串的段保持对象引用不变
+  // 增量复用：相同内容的段保持对象引用不变
   const result: ContentSegment[] = []
   const minLen = Math.min(cachedSegments.length, newRawSegments.length)
 
   for (let i = 0; i < newRawSegments.length; i++) {
     const raw = newRawSegments[i]!
     const prev = i < minLen ? cachedSegments[i] : null
-    if (prev && prev.html === raw.html) {
-      // HTML 未变，复用旧对象引用 → Vue 不触发子组件更新
-      result.push(prev)
-    } else {
-      result.push({
-        html: raw.html,
-        index: i,
-        key: `seg-${i}`,
-      })
+
+    if (prev && prev.type === raw.type) {
+      if (raw.type === 'custom-block' && prev.type === 'custom-block') {
+        // 自定义块：type 和 content 相同则复用
+        if (prev.block?.type === raw.block?.type && prev.block?.content === raw.block?.content) {
+          result.push(prev)
+          continue
+        }
+      } else if (raw.type === 'html' && prev.type === 'html') {
+        // HTML 段：字符串相同则复用
+        if (prev.html === raw.html) {
+          result.push(prev)
+          continue
+        }
+      }
     }
+
+    result.push({
+      type: raw.type,
+      html: raw.html,
+      block: raw.block,
+      index: i,
+      key: `seg-${i}`,
+    })
   }
 
   cachedHtml = html
   cachedSegments = result
+  return result
+}
+
+/**
+ * 将渲染后的 HTML 拆分为混合段（非增量版，用于传统渲染路径）
+ *
+ * 识别 data-streams-block 占位符，返回 html 和 custom-block 类型的混合段列表。
+ */
+export function splitHtmlToSegments(html: string): ContentSegment[] {
+  if (!html?.trim()) return []
+
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = html
+
+  const result: ContentSegment[] = []
+  let idx = 0
+
+  for (const child of Array.from(wrapper.childNodes)) {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      const el = child as HTMLElement
+      const blockType = el.getAttribute('data-streams-block')
+      const blockContent = el.getAttribute('data-content')
+      if (blockType) {
+        const decodedContent = blockContent ? decodeBase64(blockContent) : ''
+        result.push({
+          type: 'custom-block',
+          html: '',
+          block: { type: blockType, content: decodedContent },
+          index: idx,
+          key: `seg-${idx}`,
+        })
+      } else {
+        result.push({
+          type: 'html',
+          html: el.outerHTML,
+          index: idx,
+          key: `seg-${idx}`,
+        })
+      }
+      idx++
+    } else if (child.nodeType === Node.TEXT_NODE) {
+      const text = child.textContent
+      if (text?.trim()) {
+        result.push({
+          type: 'html',
+          html: text,
+          index: idx,
+          key: `seg-${idx}`,
+        })
+        idx++
+      }
+    }
+  }
+
   return result
 }
 

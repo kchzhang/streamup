@@ -109,8 +109,8 @@ function tryIncrementalPatch(container: HTMLElement, oldHtml: string, newHtml: s
   const oldTagMatch = oldHtml.match(/^<(\w+)([^>]*)>([\s\S]*)<\/\1>$/)
   const newTagMatch = newHtml.match(/^<(\w+)([^>]*)>([\s\S]*)<\/\1>$/)
   if (oldTagMatch && newTagMatch && oldTagMatch[1] === newTagMatch[1] && oldTagMatch[2] === newTagMatch[2]) {
-    const oldInner = oldTagMatch[3]
-    const newInner = newTagMatch[3]
+    const oldInner = oldTagMatch[3] ?? ''
+    const newInner = newTagMatch[3] ?? ''
     if (newInner.startsWith(oldInner) && oldInner.length > 0) {
       const delta = newInner.slice(oldInner.length)
       if (delta) {

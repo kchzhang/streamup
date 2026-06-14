@@ -12,6 +12,8 @@
 export interface FetchSSEEvent {
   /** 提取出的文本内容 */
   content: string
+  /** 提取出的推理/思考内容（如 reasoning_content） */
+  reasoningContent?: string
   /** 原始解析出的 JSON 数据 */
   raw: unknown
 }
@@ -26,8 +28,8 @@ export interface FetchSSEOptions {
   headers?: Record<string, string>
   /** 请求体 */
   body?: BodyInit | null
-  /** 从解析的 JSON 中提取文本，默认 OpenAI 格式 */
-  contentExtractor?: (data: unknown) => string
+  /** 从解析的 JSON 中提取文本，默认 OpenAI 格式；返回字符串或 { content, reasoningContent } 对象 */
+  contentExtractor?: (data: unknown) => string | ExtractorResult
   /** 外部 AbortSignal，可用于链接多个取消源 */
   signal?: AbortSignal
   /** 额外 Fetch 配置 */
@@ -47,12 +49,20 @@ export class FetchSSEError extends Error {
   }
 }
 
+/** 默认 OpenAI 风格提取器结果 */
+interface ExtractorResult {
+  content: string
+  reasoningContent?: string
+}
+
 /** 默认 OpenAI 风格提取器 */
-function defaultOpenAIExtractor(data: unknown): string {
+function defaultOpenAIExtractor(data: unknown): ExtractorResult {
   const obj = data as Record<string, unknown> | undefined
   const choices = obj?.choices as Array<Record<string, unknown>> | undefined
   const delta = choices?.[0]?.delta as Record<string, unknown> | undefined
-  return typeof delta?.content === 'string' ? delta.content : ''
+  const content = typeof delta?.content === 'string' ? delta.content : ''
+  const reasoningContent = typeof delta?.reasoning_content === 'string' && delta.reasoning_content ? delta.reasoning_content : undefined
+  return { content, reasoningContent }
 }
 
 /**
@@ -141,9 +151,12 @@ export class FetchSSEStream implements AsyncIterable<FetchSSEEvent> {
 
           try {
             const json = JSON.parse(data)
-            const content = extract(json)
-            if (content) {
-              yield { content, raw: json }
+            const extracted = extract(json)
+            // 兼容 string 和 ExtractorResult 两种返回
+            const content = typeof extracted === 'string' ? extracted : extracted.content
+            const reasoningContent = typeof extracted === 'string' ? undefined : extracted.reasoningContent
+            if (content || reasoningContent) {
+              yield { content: content ?? '', reasoningContent, raw: json }
             }
           } catch {
             // 跳过无法解析的行

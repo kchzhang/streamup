@@ -1,3 +1,11 @@
+data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"role":"assistant","content":"","reasoning_content":"用户想了解","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"","reasoning_content":" Vue 3 的组合式","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"","reasoning_content":" API，我需要","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"","reasoning_content":"包含代码示例。","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_ reason":""}],"usage":null}
+
 data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"role":"assistant","content":"你好","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
 
 data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"！Vue 3","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
@@ -1181,6 +1189,118 @@ data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"c
 data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"选择222。","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
 
 data: {"id":"cmb-8264ac7866db11f19b6e92922c2a7a9a","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"role":"assistant","content":"","reasoning_content":"","function_call":{"name":"","arguments":""},"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":24,"completion_tokens":1777,"total_tokens":1801,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0,"cached_tokens":0},"prompt_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0,"cached_tokens":0},"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":24,"cache_read_input_tokens":0,"cache_creation_input_tokens":0,"prompt_cache_write_tokens":0,"completion_thinking_tokens":0,"credit":1.13,"cached_tokens":0}}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"让我来分析这个问题。\n\n```think\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"首先","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"，我需要","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"理解用户","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"的核心诉求","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"。从问题","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"描述来看，","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"这是一个关于","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"性能优化的","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"场景，需要","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"综合考虑","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"时间复杂度","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"和空间","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"复杂度的","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"平衡。\n```\n\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"根据我的","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"分析，以下是","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"建议：\n\n1. 使用","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":" HashMap ","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"替代数组","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"查找\n2. 引入","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"缓存机制\n3. 考虑","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"惰性加载\n\n```think\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"对于缓存","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"策略，我","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"认为 LRU ","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"是最适合","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"这个场景的","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"选择，因为","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"数据访问","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"具有局部性","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"特征。同时","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"，缓存","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"大小可以","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"根据可用","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"内存动态","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"调整。\n```\n\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"另外，我","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"还想补充","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"一点关于","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"并发处理","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"的建议：\n\n```think\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"并发问题","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"往往比","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"性能问题","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"更难调试","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"。建议优先","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"使用不可变","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"数据结构","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"，配合","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"读写锁来","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"保证线程","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"安全。\n```\n\n","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"希望这些建议","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"content":"对你有帮助！","reasoning_content":"","function_call":null,"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":""}],"usage":null}
+
+data: {"id":"cmb-think001","model":"glm-5.0","object":"chat.completion.chunk","created":1781322840,"choices":[{"index":0,"delta":{"role":"assistant","content":"","reasoning_content":"","function_call":{"name":"","arguments":""},"refusal":"","tool_calls":[],"extra_fields":null},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":24,"completion_tokens":500,"total_tokens":524,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0,"cached_tokens":0},"prompt_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0,"cached_tokens":0},"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":24,"cache_read_input_tokens":0,"cache_creation_input_tokens":0,"prompt_cache_write_tokens":0,"completion_thinking_tokens":0,"credit":0.5,"cached_tokens":0}}
 
 data: [DONE]
 

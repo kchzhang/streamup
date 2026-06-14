@@ -8,13 +8,16 @@
  *
  * 支持平滑渲染、虚拟滚动（长内容性能优化）、自动滚动。
  */
-import { computed, ref, watch, onMounted, isRef } from 'vue'
+import { computed, ref, watch, onMounted, isRef, provide, useSlots, defineComponent, type Component } from 'vue'
 import { useSmoothRenderer } from '../composables/useSmoothRenderer'
 import { MarkdownRenderer } from '../renderers/markdownRenderer'
 import { TextRenderer } from '../renderers/textRenderer'
 import { AutoScrollManager } from '../utils/scroll'
 import VirtualStreamContent from './VirtualStreamContent.vue'
+import { CUSTOM_BLOCK_RENDER_KEY, type CustomBlockRenderFn } from '../core/customBlock'
+import { splitHtmlToSegments } from '../composables/useVirtualStream'
 import type { VirtualStreamOptions } from '../core/types'
+import type { CustomBlockInstance } from '../core/types'
 import type { Ref } from 'vue'
 
 const props = withDefaults(
@@ -29,12 +32,15 @@ const props = withDefaults(
     autoScroll?: boolean
     /** 是否启用虚拟滚动，传入对象可配置选项 */
     virtual?: boolean | VirtualStreamOptions
+    /** 自定义块类型列表（如 ['think', 'action']） */
+    customBlocks?: string[]
   }>(),
   {
     streaming: false,
     smoothSpeed: 2,
     autoScroll: true,
     virtual: false,
+    customBlocks: () => [],
   },
 )
 
@@ -77,7 +83,7 @@ const displayContent = computed(() => {
 // ── Markdown 渲染 ──
 const mdReadyVersion = ref(0)
 const textRenderer = new TextRenderer()
-const mdRenderer = new MarkdownRenderer()
+const mdRenderer = new MarkdownRenderer(props.customBlocks)
 mdRenderer.setFallback(textRenderer)
 mdRenderer.onReady(() => {
   mdReadyVersion.value++
@@ -86,6 +92,45 @@ mdRenderer.onReady(() => {
 const renderedContent = computed(() => {
   void mdReadyVersion.value
   return mdRenderer.render(displayContent.value, isStreaming.value)
+})
+
+// ── 自定义块插槽渲染组件 ──
+const slots = useSlots()
+
+// 缓存组件定义，避免 computed 每次重算时创建新对象导致 <component :is> 反复卸载/挂载
+const componentCache = new Map<string, Component>()
+
+function getOrCreateBlockComponent(blockType: string): Component {
+  if (!componentCache.has(blockType)) {
+    componentCache.set(blockType, defineComponent({
+      name: `StreamsCustomBlock_${blockType}`,
+      props: { block: { type: Object as () => CustomBlockInstance, required: true } },
+      setup(props) {
+        // 渲染时动态访问 slots，确保始终使用最新的 slot 函数
+        return () => {
+          const slot = slots[blockType]
+          return slot ? slot(props.block) : null
+        }
+      },
+    }))
+  }
+  return componentCache.get(blockType)!
+}
+
+const customBlockRenders = computed<Record<string, Component>>(() => {
+  const result: Record<string, Component> = {}
+  for (const blockType of props.customBlocks) {
+    result[blockType] = getOrCreateBlockComponent(blockType)
+  }
+  return result
+})
+
+provide(CUSTOM_BLOCK_RENDER_KEY, customBlockRenders)
+
+// ── 传统渲染路径：混合段拆分 ──
+const traditionalSegments = computed(() => {
+  if (!props.customBlocks.length) return null
+  return splitHtmlToSegments(renderedContent.value)
 })
 
 onMounted(() => {
@@ -156,7 +201,24 @@ defineExpose({
 
     <!-- 传统渲染 -->
     <template v-else>
+      <!-- 有自定义块时：混合段渲染 -->
+      <template v-if="traditionalSegments">
+        <template v-for="seg in traditionalSegments" :key="seg.key">
+          <div
+            v-if="seg.type === 'html'"
+            class="streams-md-content"
+            v-html="seg.html"
+          />
+          <component
+            v-else-if="seg.type === 'custom-block' && seg.block && customBlockRenders[seg.block.type]"
+            :is="customBlockRenders[seg.block.type]"
+            :block="seg.block"
+          />
+        </template>
+      </template>
+      <!-- 无自定义块时：原始 v-html -->
       <div
+        v-else
         class="streams-md-content"
         v-html="renderedContent"
       />

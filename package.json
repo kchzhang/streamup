@@ -1,6 +1,6 @@
 {
-  "name": "streams",
-  "version": "0.1.0",
+  "name": "@knox.zhang/streamup",
+  "version": "0.1.0-beta.0",
   "description": "Vue 3 streaming rendering component library",
   "type": "module",
   "main": "./dist/streams.cjs",
@@ -24,7 +24,10 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "type-check": "vue-tsc --build",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "prepublishOnly": "pnpm run build",
+    "publish:beta": "pnpm run build && npm publish --tag beta --access public",
+    "publish:release": "pnpm run build && npm publish --access public"
   },
   "dependencies": {
     "vue": "^3.5.32"

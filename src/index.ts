@@ -14,12 +14,16 @@ export type {
   StreamRenderer,
   AutoScrollOptions,
   VirtualStreamOptions,
+  CustomBlockInstance,
 } from './core/types'
+
+export { CUSTOM_BLOCK_RENDER_KEY, type CustomBlockRenderFn } from './core/customBlock'
 
 // Composables
 export { useSmoothRenderer } from './composables/useSmoothRenderer'
 export { useVirtualStream } from './composables/useVirtualStream'
 export type { VirtualStreamOptions as VirtualStreamOptionsType, ContentSegment, UseVirtualStreamReturn } from './composables/useVirtualStream'
+export { splitHtmlToSegments } from './composables/useVirtualStream'
 
 // Components
 export { default as Stream } from './components/Stream.vue'
@@ -29,6 +33,7 @@ export { default as StreamSegmentRenderer } from './components/StreamSegmentRend
 // Renderers
 export { TextRenderer } from './renderers/textRenderer'
 export { MarkdownRenderer } from './renderers/markdownRenderer'
+export { decodeBase64 } from './renderers/markdownRenderer'
 export { getHighlighter, getHighlighterSync, createMdHighlightPlugin, DEFAULT_LANGUAGES, DEFAULT_THEMES } from './renderers/highlighter'
 export type { ShikiHighlighter } from './renderers/highlighter'
 

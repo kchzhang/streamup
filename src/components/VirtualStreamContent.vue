@@ -7,11 +7,14 @@
  *
  * 优化：使用 StreamSegmentRenderer 替代 v-html，
  * 对代码块段做 DOM 差量更新，消除闪烁。
+ *
+ * 自定义块：通过 inject 获取渲染函数，渲染为 Vue 组件。
  */
-import { ref, computed, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted, inject, type Component, type ComputedRef } from 'vue'
 import { useVirtualStream } from '../composables/useVirtualStream'
 import type { VirtualStreamOptions } from '../composables/useVirtualStream'
 import StreamSegmentRenderer from './StreamSegmentRenderer.vue'
+import { CUSTOM_BLOCK_RENDER_KEY } from '../core/customBlock'
 
 const props = withDefaults(
   defineProps<{
@@ -36,6 +39,10 @@ const props = withDefaults(
     contentClass: '',
   },
 )
+
+// 注入自定义块渲染函数映射（provide 的是 ComputedRef）
+const customBlockRendersRef = inject<ComputedRef<Record<string, Component>>>(CUSTOM_BLOCK_RENDER_KEY)!
+const customBlockRenders = computed(() => customBlockRendersRef?.value ?? {})
 
 const containerRef = ref<HTMLElement | null>(null)
 const containerHeight = ref<number>(0)
@@ -109,7 +116,15 @@ defineExpose({
           transform: `translateY(${item.start}px)`,
         }"
       >
+        <!-- 自定义块段 -->
+        <component
+          v-if="segments[item.index]?.type === 'custom-block' && segments[item.index]?.block"
+          :is="customBlockRenders[segments[item.index]!.block!.type]"
+          :block="segments[item.index]!.block!"
+        />
+        <!-- HTML 段 -->
         <StreamSegmentRenderer
+          v-else
           :html="segments[item.index]?.html ?? ''"
           :index="item.index"
         />

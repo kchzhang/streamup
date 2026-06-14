@@ -36,7 +36,7 @@ async function getMarkdownIt(): Promise<MarkdownItInstance | null> {
     try {
       const { default: MarkdownIt } = await import('markdown-it')
       const md = new MarkdownIt({
-        html: false,
+        html: true,
         linkify: true,
         typographer: true,
       })
@@ -77,11 +77,84 @@ function hasUnclosedBlocks(text: string): boolean {
   return false
 }
 
+/** 将字符串编码为 base64（支持 Unicode） */
+function encodeBase64(str: string): string {
+  return btoa(unescape(encodeURIComponent(str)))
+}
+
+/** 将 base64 解码为字符串 */
+export function decodeBase64(b64: string): string {
+  try {
+    return decodeURIComponent(escape(atob(b64)))
+  } catch {
+    return atob(b64)
+  }
+}
+
+/** 自定义块在 markdown 源码中的占位标记前缀（避免被 markdown-it / shiki 处理） */
+const CUSTOM_BLOCK_PLACEHOLDER_PREFIX = '<!--STREAMS-CUSTOM-BLOCK-'
+
+/**
+ * 在 markdown 渲染前，将自定义块（```think 等）替换为 HTML 注释占位符
+ *
+ * 原因：shiki 高亮插件会将未知语言回退为 plaintext，
+ * 导致 wrapCodeBlocks 正则无法匹配原始语言名。
+ * 使用 HTML 注释作为占位符，markdown-it 会保留注释不修改，
+ * 渲染后再从注释中还原自定义块。
+ *
+ * 注释格式：<!--STREAMS-CUSTOM-BLOCK-{key}-->
+ * key 为自增索引，通过 extracted Map 可查找 type 和 content。
+ */
+function extractCustomBlocksFromMd(content: string, customBlocks: string[]): {
+  processed: string
+  extracted: Map<string, { type: string; content: string }>
+} {
+  const extracted = new Map<string, { type: string; content: string }>()
+  if (!customBlocks.length) return { processed: content, extracted }
+
+  // 匹配 ```lang\n...\n``` 中的自定义块
+  const re = new RegExp(`^\\\`\\\`\\\`(${customBlocks.join('|')})\\s*\\n([\\s\\S]*?)\\n\\\`\\\`\\\`\\s*$`, 'gm')
+  let idx = 0
+  const processed = content.replace(re, (_match, lang: string, code: string) => {
+    const key = `${idx}`
+    const encoded = encodeBase64(code)
+    extracted.set(key, { type: lang, content: encoded })
+    idx++
+    return `${CUSTOM_BLOCK_PLACEHOLDER_PREFIX}${key}-->`
+  })
+
+  return { processed, extracted }
+}
+
+/**
+ * 在 markdown 渲染后，将占位注释还原为 data-streams-block 占位 div
+ */
+function restoreCustomBlockPlaceholders(html: string, extracted: Map<string, { type: string; content: string }>): string {
+  if (!extracted.size) return html
+  for (const [key, { type, content: encodedContent }] of extracted) {
+    const comment = `${CUSTOM_BLOCK_PLACEHOLDER_PREFIX}${key}-->`
+    const idx = html.indexOf(comment)
+    if (idx === -1) continue
+    const replacement = `<div data-streams-block="${type}" data-content="${encodedContent}"></div>`
+    html = html.replace(comment, replacement)
+  }
+  return html
+}
+
 /** 为代码块添加 GitHub 风格外框和 header（仅限有语言标记的代码块） */
-function wrapCodeBlocks(html: string): string {
+function wrapCodeBlocks(html: string, customBlocks?: string[]): string {
   return html.replace(
     /<pre([^>]*)><code\s+class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
     (_match, attrs: string, lang: string, code: string) => {
+      // 如果是自定义块类型，输出占位符
+      if (customBlocks?.includes(lang)) {
+        // 从 code 内部提取纯文本内容（去除 HTML 标签）
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = code
+        const rawContent = tempDiv.textContent ?? ''
+        const encoded = encodeBase64(rawContent)
+        return `<div data-streams-block="${lang}" data-content="${encoded}"></div>`
+      }
       const langLabel = LANG_MAP[lang] ?? lang.charAt(0).toUpperCase() + lang.slice(1)
       return (
         `<div class="streams-code-wrapper" data-lang="${lang}">` +
@@ -109,6 +182,11 @@ const LANG_MAP: Record<string, string> = {
 export class MarkdownRenderer implements StreamRenderer {
   private fallbackRenderer: StreamRenderer | null = null
   private _onReady: (() => void) | null = null
+  private customBlocks: string[]
+
+  constructor(customBlocks?: string[]) {
+    this.customBlocks = customBlocks ?? []
+  }
 
   /** 设置降级渲染器 */
   setFallback(renderer: StreamRenderer): void {
@@ -140,27 +218,32 @@ export class MarkdownRenderer implements StreamRenderer {
   }
 
   private renderWithMd(md: MarkdownItInstance, content: string, isStreaming: boolean): string {
-    let html: string
-    if (!isStreaming) {
-      html = md.render(content)
-    } else if (hasUnclosedBlocks(content)) {
-      const closedContent = this.tryCloseBlocks(content)
-      html = md.render(closedContent)
-    } else {
-      html = md.render(content)
+    // 1. 流式渲染时，先闭合未完成的 Markdown 结构（确保自定义块正则能匹配完整块）
+    let prepared = content
+    if (isStreaming && hasUnclosedBlocks(prepared)) {
+      prepared = this.tryCloseBlocks(prepared)
     }
 
-    html = wrapCodeBlocks(html)
+    // 2. 在 markdown-it 渲染前，提取自定义块为占位注释（避免被 shiki 回退为 plaintext）
+    const { processed, extracted } = extractCustomBlocksFromMd(prepared, this.customBlocks)
+
+    const html = md.render(processed)
+
+    // 3. 还原自定义块占位注释为 data-streams-block div
+    let result = restoreCustomBlockPlaceholders(html, extracted)
+
+    // 4. 处理普通代码块（非自定义块）的 GitHub 风格外框
+    result = wrapCodeBlocks(result, this.customBlocks)
 
     // 流式渲染时，移除末尾的 <hr> 标签
     // 原因：--- 在流式过程中被提前渲染为 <hr>，但后续内容到达后
     // 可能导致布局跳动。延迟到流式结束后再显示可避免抖动。
     // <hr> 在 HTML 中间（后有内容）则是稳定的，不受影响。
     if (isStreaming) {
-      html = html.replace(/<hr\s*\/?>\s*$/i, '')
+      result = result.replace(/<hr\s*\/?>\s*$/i, '')
     }
 
-    return html
+    return result
   }
 
   /** 尝试闭合未完成的 Markdown 结构 */

@@ -1,6 +1,6 @@
 {
   "name": "@knoxzhang/streamup",
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "description": "Vue 3 streaming rendering component library",
   "type": "module",
   "main": "./dist/streams.cjs",
@@ -11,12 +11,13 @@
       "import": "./dist/streams.mjs",
       "require": "./dist/streams.cjs",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./style.css": "./dist/streamup.css"
   },
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "sideEffects": ["**/*.css"],
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
